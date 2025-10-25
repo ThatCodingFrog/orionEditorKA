@@ -1,3 +1,11 @@
+var orionVFS = new VFS();
+
+orionVFS.createFile("myFile", "js");
+
+orionVFS.writeFile("myFile.js", "console.log('I would have logged this');");
+var r = orionVFS.readFile("myFile.js");
+console.log(r);
+
 var editor = ace.edit("editor");
         editor.setTheme("ace/theme/textmate");
         editor.session.setMode("ace/mode/html");
