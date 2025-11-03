@@ -48,20 +48,20 @@ class VFS {
      * @param {string} p_fileExtension
      */
     createFile(p_filename, p_fileExtension) {
-       const db = this.db;
+        const db = this.db;
 
-            const transaction = db.transaction(this.directory, "readwrite");
-            const store = transaction.objectStore(this.directory);
+        const transaction = db.transaction(this.directory, "readwrite");
+        const store = transaction.objectStore(this.directory);
 
-            const file = {
-                filename: p_filename + "." + p_fileExtension, //required for keyPath
-                contents: ""
-            };
+        const file = {
+            filename: p_filename + "." + p_fileExtension, //required for keyPath
+            contents: ""
+        };
 
-            const createRequest = store.add(file);
+        const createRequest = store.add(file);
 
-            createRequest.onsuccess = () => { console.log("File created successfully"); alert("File created successfully"); }
-            createRequest.onerror = () => { throw new Error(`Error creating new file: ${createRequest.error}`); }
+        createRequest.onsuccess = () => { console.log("File created successfully"); alert("File created successfully"); }
+        createRequest.onerror = () => { throw new Error(`Error creating new file: ${createRequest.error}`); }
 
         transaction.oncomplete = () => {
             db.close();
@@ -88,18 +88,18 @@ class VFS {
     #read(file) {
         return new Promise((resolve, reject) => {
             let returnVal = "";
-                const db = this.db;
+            const db = this.db;
 
-                const transaction = db.transaction(this.directory, "readonly");
-                const store = transaction.objectStore(this.directory);
+            const transaction = db.transaction(this.directory, "readonly");
+            const store = transaction.objectStore(this.directory);
 
-                const readRequest = store.get(file);
+            const readRequest = store.get(file);
 
-                readRequest.onsuccess = () => {
-                    console.log(`File read successfully: ${file}`);
-                    returnVal = readRequest.result.contents;
-                }
-                readRequest.onerror = () => { reject(new Error(`Error reading file: ${readRequest.error}`)); }
+            readRequest.onsuccess = () => {
+                console.log(`File read successfully: ${file}`);
+                returnVal = readRequest.result.contents;
+            }
+            readRequest.onerror = () => { reject(new Error(`Error reading file: ${readRequest.error}`)); }
 
             transaction.oncomplete = () => {
                 db.close();
@@ -115,24 +115,24 @@ class VFS {
      * @param {string} _data
      */
     writeFile(file, _data) {
-            const db = this.db
+        const db = this.db
 
-            const transaction = db.transaction(this.directory, "readwrite");
-            const store = transaction.objectStore(this.directory);
+        const transaction = db.transaction(this.directory, "readwrite");
+        const store = transaction.objectStore(this.directory);
 
-            const data = {
-                filename: file,
-                contents: _data
-            };
+        const data = {
+            filename: file,
+            contents: _data
+        };
 
-            const writeRequest = store.put(data);
+        const writeRequest = store.put(data);
 
-            writeRequest.onsuccess = () => { console.log(`File written successfully: ${file}`); }
-            writeRequest.onerror = () => { throw new Error(`Error writing to file: ${writeRequest.error}`); }
+        writeRequest.onsuccess = () => { console.log(`File written successfully: ${file}`); }
+        writeRequest.onerror = () => { throw new Error(`Error writing to file: ${writeRequest.error}`); }
 
-            transaction.oncomplete = () => {
-                db.close();
-            }
+        transaction.oncomplete = () => {
+            db.close();
+        }
     }
 
 
