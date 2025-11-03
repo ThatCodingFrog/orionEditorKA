@@ -1,3 +1,7 @@
+//Assisted by ChatGPT to understand how to build it so it reuses
+//the onsuccess result rather than trying to reset onsuccess each time
+//Because I'm still learning
+
 class VFS {
     /**
      * Creates a new Virtual File System in IndexedDB
@@ -7,6 +11,8 @@ class VFS {
         this.request = indexedDB.open("orionVFS", 1);
 
         this.directory = directory;
+        this.db = null;
+
 
         this.request.onupgradeneeded = (event) => {
             const db = event.target.result;
@@ -27,6 +33,11 @@ class VFS {
             }
         }
 
+        this.request.onsuccess = (event) => {
+            this.db = event.target.result;
+            console.log(`Database open and ready: ${this.directory}`);
+        }
+
         this.request.onerror = () => { throw new Error(`Database error: ${this.request.error}`) };
     }
 
@@ -37,8 +48,7 @@ class VFS {
      * @param {string} p_fileExtension
      */
     createFile(p_filename, p_fileExtension) {
-        this.request.onsuccess = (event) => {
-            const db = event.target.result;
+       const db = this.db;
 
             const transaction = db.transaction(this.directory, "readwrite");
             const store = transaction.objectStore(this.directory);
@@ -53,9 +63,8 @@ class VFS {
             createRequest.onsuccess = () => { console.log("File created successfully"); alert("File created successfully"); }
             createRequest.onerror = () => { throw new Error(`Error creating new file: ${createRequest.error}`); }
 
-            transaction.oncomplete = () => {
-                db.close();
-            }
+        transaction.oncomplete = () => {
+            db.close();
         }
     }
 
@@ -65,7 +74,7 @@ class VFS {
      * @param {string} filename
      */
     deleteFile(filename) {
-        
+        const db = this.db;
     }
 
 
@@ -74,28 +83,29 @@ class VFS {
      * @param {string} file
      * @return {string} The contents of the file
      */
-    static readFile(file) {
-        let returnVal = "";
-        this.request.onsuccess = (event) => {
-            const db = event.target.result;
 
-            const transaction = db.transaction(this.directory, "readonly");
-            const store = transaction.objectStore(this.directory);
+    //function corrected by AI
+    #read(file) {
+        return new Promise((resolve, reject) => {
+            let returnVal = "";
+                const db = this.db;
 
-            const readRequest = store.get(file);
+                const transaction = db.transaction(this.directory, "readonly");
+                const store = transaction.objectStore(this.directory);
 
-            readRequest.onsuccess = () => {
-                console.log(`File read successfully: ${file}`);
-                console.log(readRequest.result.contents);
-                returnVal = readRequest.result.contents;
-            }
-            readRequest.onerror = () => { throw new Error(`Error reading file: ${readRequest.error}`); }
+                const readRequest = store.get(file);
+
+                readRequest.onsuccess = () => {
+                    console.log(`File read successfully: ${file}`);
+                    returnVal = readRequest.result.contents;
+                }
+                readRequest.onerror = () => { reject(new Error(`Error reading file: ${readRequest.error}`)); }
 
             transaction.oncomplete = () => {
                 db.close();
+                resolve(returnVal);
             }
-        }
-        return returnVal;
+        });
     }
 
 
@@ -105,8 +115,7 @@ class VFS {
      * @param {string} _data
      */
     writeFile(file, _data) {
-        this.request.onsuccess = (event) => {
-            const db = event.target.result;
+            const db = this.db
 
             const transaction = db.transaction(this.directory, "readwrite");
             const store = transaction.objectStore(this.directory);
@@ -124,9 +133,12 @@ class VFS {
             transaction.oncomplete = () => {
                 db.close();
             }
-        }
     }
 
+
+    readFile(file) {
+        this.#read(file).then((content) => { console.log(content); eval(content); }).catch((error) => { console.error(`Error reading file: ${error}`) });
+    }
 
     /**
      * Returns a URL to access the file for links

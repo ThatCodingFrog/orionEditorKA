@@ -1,11 +1,5 @@
 var orionVFS = new VFS();
 
-orionVFS.createFile("myFile", "js");
-
-orionVFS.writeFile("myFile.js", "console.log('I would have logged this');");
-var r = orionVFS.readFile("myFile.js");
-console.log(r);
-
 var editor = ace.edit("editor");
         editor.setTheme("ace/theme/textmate");
         editor.session.setMode("ace/mode/html");
@@ -248,6 +242,12 @@ var editor = ace.edit("editor");
                 reader.readAsText(file);
             };
             input.click();
+}
+
+        function createNewFile() {
+            var filename = prompt("Enter a name for your new file: ", "myFile");
+            var ext = prompt("Enter the file extension (html, css, js): ", "js");
+            orionVFS.createFile(filename, ext);
         }
         function notAddedYet() {
             alert("This feature is not added yet.");
@@ -344,7 +344,7 @@ var editor = ace.edit("editor");
                 previewContainer.style.width = '100%';
                 resizer.style.display = 'none';
                 editorIsShowing = false;
-            }else {
+            } else {
                 editorContainer.style.display = 'block';
                 previewContainer.style.width = '50%';
                 resizer.style.display = 'block';
