@@ -1,0 +1,24 @@
+{
+  "name": "orion-editor-app",
+  "version": "1.0.0",
+  "description": "A better editor for users of Khan Academy",
+  "homepage": "https://github.com/ThatCodingFrog/orionEditorKA#readme",
+  "bugs": {
+    "url": "https://github.com/ThatCodingFrog/orionEditorKA/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThatCodingFrog/orionEditorKA.git"
+  },
+  "license": "SEE LICENSE IN LICENSE.md",
+  "author": "AwesomeOrion, ThatCodingFrog",
+  "type": "commonjs",
+  "main": "start.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^39.0.0"
+  }
+}
