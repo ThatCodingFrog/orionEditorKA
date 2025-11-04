@@ -1,4 +1,4 @@
-![Orion Editor Logo](./resources/full_logo.jpeg)  
+![Orion Editor Logo](./orion-editor-app/resources/full_logo.jpeg)  
 A **better** code editor made for people on Khan Academy.  
 
 ---
