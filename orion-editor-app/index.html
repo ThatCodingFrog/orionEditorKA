@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
     <link rel="icon" href="./resources/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="./resources/style.css" />
+    <script src="./resources/scripts/VFS.js"></script> <!--Load as early as possible, to ensure database for Virtual File System is set up as soon as possible-->
+    <script>
+        var orionVFS = new VFS();
+    </script>
+
+
 </head>
 <body>
     <nav>
@@ -46,7 +52,7 @@
             <button class="fullscreen-btn material-symbols-rounded" onclick="downloadCode()" title="Download Code in Editor">
                 download
             </button>
-            <button class="tool material-symbols-rounded" onclick="notAddedYet()" title="New File">
+            <button class="tool material-symbols-rounded" onclick="createNewFile()" title="New File">
                 add_2
             </button>
         </div>
