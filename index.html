@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
     <link rel="icon" href="./resources/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="./resources/style.css" />
+    <script src="./resources/scripts/VFS.js"></script> <!--Load as early as possible, to ensure database for Virtual File System is set up as soon as possible-->
+    <script>
+        var orionVFS = new VFS();
+    </script>
+
+
 </head>
 <body>
     <nav>
@@ -100,7 +106,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-inline_autocomplete.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.0/beautify-html.min.js"></script>
 
-    <script src="./resources/scripts/VFS.js"></script>
     <script src="./resources/scripts/main.js"></script>
     <script src="./resources/scripts/beautify-animation.js"></script>
 </body>

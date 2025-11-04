@@ -1,5 +1,3 @@
-var orionVFS = new VFS();
-
 var editor = ace.edit("editor");
 editor.setTheme("ace/theme/textmate");
 editor.session.setMode("ace/mode/html");
