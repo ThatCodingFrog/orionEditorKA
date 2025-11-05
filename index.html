@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
     <link rel="icon" href="./resources/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="./resources/style.css" />
+    <link rel="stylesheet" href="./resources/editor-tabs.css" />
     <script src="./resources/scripts/VFS.js"></script> <!--Load as early as possible, to ensure database for Virtual File System is set up as soon as possible-->
     <script>
         var orionVFS = new VFS();
@@ -67,6 +68,9 @@
     </div>
     <div class="editor-plus-preview">
         <div id="editor-container">
+            <div id="fileTab">
+                <span class="file" id="tab1">index.html</span>
+            </div>
             <div id="editor">
                 <!-- Ace editor will replace this content -->
             </div>
