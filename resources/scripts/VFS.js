@@ -79,35 +79,47 @@ class VFS {
 
 
     /**
-     * Reads a file from the IndexedDB Virtual File System
+     * Reads a file from the IndexedDB Virtual File System (private method)
      * @param {string} file
-     * @return {string} The contents of the file
+     * @return {Promise<string>} The contents of the file
      */
 
     //function corrected by AI
-    #read(file) {
-        return new Promise((resolve, reject) => {
-            let returnVal = "";
-            const db = this.db;
+    async #read(file) {
+            return new Promise((resolve, reject) => {
+                const db = this.db;
 
-            const transaction = db.transaction(this.directory, "readonly");
-            const store = transaction.objectStore(this.directory);
+                const transaction = db.transaction(this.directory, "readonly");
+                const store = transaction.objectStore(this.directory);
 
-            const readRequest = store.get(file);
+                const readRequest = store.get(file);
 
-            readRequest.onsuccess = () => {
-                console.log(`File read successfully: ${file}`);
-                returnVal = readRequest.result.contents;
-            }
-            readRequest.onerror = () => { reject(new Error(`Error reading file: ${readRequest.error}`)); }
+                readRequest.onsuccess = () => {
+                    console.log(`File read successfully: ${file}`);
+                    resolve(readRequest.result.contents);
+                }
+                readRequest.onerror = () => { reject(new Error(`Error reading file: ${readRequest.error}`)); }
 
-            transaction.oncomplete = () => {
-                db.close();
-                resolve(returnVal);
-            }
-        });
+                transaction.oncomplete = () => { }
+            });
     }
 
+    /**
+     * Also assisted by AI (my use of Promises wasn't quite correct before)
+     * Publicly accessible method to read from a file
+     * @param {string} file
+     * @returns {string} The contents of the file (when awaited)
+     */
+    async readFile(file) {
+        try {
+            const content = await this.#read(file);
+            console.log("readFile", content);
+            return content;
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
+    }
 
     /**
      * Writes to a file in the IndexedDB Virtual File System
@@ -115,7 +127,7 @@ class VFS {
      * @param {string} _data
      */
     writeFile(file, _data) {
-        const db = this.db
+        const db = this.db;
 
         const transaction = db.transaction(this.directory, "readwrite");
         const store = transaction.objectStore(this.directory);
@@ -136,9 +148,7 @@ class VFS {
     }
 
 
-    readFile(file) {
-        this.#read(file).then((content) => { console.log(content); eval(content); }).catch((error) => { console.error(`Error reading file: ${error}`) });
-    }
+    
 
     /**
      * Returns a URL to access the file for links
