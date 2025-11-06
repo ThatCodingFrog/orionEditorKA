@@ -383,4 +383,5 @@ window.onload = async function () {
         editor.setValue(savedCode);
         updatePreview();
     }
+    updateCurrentFileTab(currentTab);
 };
