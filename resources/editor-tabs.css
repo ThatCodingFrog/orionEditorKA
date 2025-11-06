@@ -1,7 +1,7 @@
-﻿.file {
+﻿.fileTab {
     font-family: 'Open Sans', sans-serif;
     font-size: 11px;
     padding: 5px;
     border: 1px solid gainsboro;
-    background-color: gainsboro;
+    /*background-color: gainsboro;*/
 }

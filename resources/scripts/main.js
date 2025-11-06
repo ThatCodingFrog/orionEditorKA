@@ -197,7 +197,8 @@ function saveCode() {
     Promise.resolve()
         .then(() => {
             var code = editor.getValue();
-            localStorage.setItem('ORION_EDITOR_CODE', code);
+            //localStorage.setItem('ORION_EDITOR_CODE', code);
+            orionVFS.writeFile('index.html', code);
             alert('Code saved to localStorage!');
             console.log("Code saved to localStorage.");
         })
@@ -246,6 +247,8 @@ function createNewFile() {
     var filename = prompt("Enter a name for your new file: ", "myFile");
     var ext = prompt("Enter the file extension (html, css, js): ", "js");
     orionVFS.createFile(filename, ext);
+
+    createNewEditorTab(filename + "." + ext);
 }
 function notAddedYet() {
     alert("This feature is not added yet.");
@@ -367,14 +370,15 @@ window.addEventListener('resize', function () {
         }
     }
 });
-window.onload = function () {
+window.onload = async function () {
     if (window.innerWidth <= 800) {
         editorContainer.style.display = 'block';
         previewContainer.style.width = '100%';
         resizer.style.display = 'none';
         editorIsShowing = false;
     }
-    const savedCode = localStorage.getItem('ORION_EDITOR_CODE');
+    //const savedCode = localStorage.getItem('ORION_EDITOR_CODE');
+    const savedCode = await orionVFS.readFile('index.html');
     if (savedCode) {
         editor.setValue(savedCode);
         updatePreview();
