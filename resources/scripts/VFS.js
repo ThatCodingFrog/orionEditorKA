@@ -147,9 +147,6 @@ class VFS {
         }
     }
 
-
-    
-
     /**
      * Returns a URL to access the file for links
      * @param {string} file
@@ -158,5 +155,26 @@ class VFS {
     getFileURL(file) {
         const url = URL.createObjectURL(new Blob([]));
         return url;
+    }
+
+    /**
+     * Gets all files in the current directory (defined by this.directory)
+     */
+    getAllFiles() {
+        return new Promise((resolve, reject) => {
+            const db = this.db;
+
+            const transaction = db.transaction(this.directory, "readonly");
+            const store = transaction.objectStore(this.directory);
+
+            const getAllRequest = store.getAll();
+
+            getAllRequest.onsuccess = () => {
+                console.log("Entries", getAllRequest.result);
+                resolve(getAllRequest.result);
+            }
+        });
+
+        //return getAllRequest;
     }
 }

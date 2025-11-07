@@ -18,18 +18,19 @@ function createNewEditorTab(filename) {
         updateCurrentFileTab(this.id);
     });
 
-    updateCurrentFileTab(this.id);
+    //updateCurrentFileTab(this.id);
     fileTrack.appendChild(newTab);
 }
 
 function updateCurrentFileTab(tab) {
+    console.log(currentTab, tab);
     var tab = document.getElementById(tab);
     var prevTab = document.getElementById(currentTab);
 
     prevTab.style.background = "white";
     tab.style.background = "gainsboro";
 
-    currentTab = tab;
+    currentTab = tab.id;
 }
 
 function getEditorTabs() {

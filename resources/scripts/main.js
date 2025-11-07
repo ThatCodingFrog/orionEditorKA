@@ -383,5 +383,9 @@ window.onload = async function () {
         editor.setValue(savedCode);
         updatePreview();
     }
-    updateCurrentFileTab(currentTab);
+
+    var fileArray = await orionVFS.getAllFiles().then((files) => { return files });
+    for (var i = 0; i < fileArray.length; i++) {
+        createNewEditorTab(fileArray[i].filename);
+    }
 };
