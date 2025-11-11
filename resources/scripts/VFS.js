@@ -16,11 +16,7 @@ class VFS {
 
         this.request.onupgradeneeded = (event) => {
             const db = event.target.result;
-            if (!db.objectStoreNames.contains("editorFiles")) {
-                db.createObjectStore("editorFiles", {
-                    keyPath: "filename"
-                });
-            }
+
             if (!db.objectStoreNames.contains("userFiles")) {
                 db.createObjectStore("userFiles", {
                     keyPath: "filename"
@@ -35,7 +31,7 @@ class VFS {
 
         this.request.onsuccess = (event) => {
             this.db = event.target.result;
-            console.log(`Database open and ready: ${this.directory}`);
+            console.log(`File system open and ready: ${this.directory}`);
         }
 
         this.request.onerror = () => { throw new Error(`Database error: ${this.request.error}`) };
@@ -62,10 +58,6 @@ class VFS {
 
         createRequest.onsuccess = () => { console.log("File created successfully"); alert("File created successfully"); }
         createRequest.onerror = () => { throw new Error(`Error creating new file: ${createRequest.error}`); }
-
-        transaction.oncomplete = () => {
-            db.close();
-        }
     }
 
 
@@ -99,8 +91,6 @@ class VFS {
                     resolve(readRequest.result.contents);
                 }
                 readRequest.onerror = () => { reject(new Error(`Error reading file: ${readRequest.error}`)); }
-
-                transaction.oncomplete = () => { }
             });
     }
 
@@ -141,10 +131,6 @@ class VFS {
 
         writeRequest.onsuccess = () => { console.log(`File written successfully: ${file}`); }
         writeRequest.onerror = () => { throw new Error(`Error writing to file: ${writeRequest.error}`); }
-
-        transaction.oncomplete = () => {
-            db.close();
-        }
     }
 
     /**
