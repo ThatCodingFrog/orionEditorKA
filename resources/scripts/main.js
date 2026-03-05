@@ -181,16 +181,16 @@ var editor = ace.edit("editor");
                     console.log("Code beautified successfully.");
                 })
                 .catch(e => {
-                    alert("There was an error beautifying the code: " + e.message);
+                    orionDialog.error("There was an error beautifying the code: " + e.message);
                     console.error("Error beautifying code:", e);
                 });
         }
         function copyCode() {
             var code = editor.getValue();
             navigator.clipboard.writeText(code).then(function() {
-                alert('Code copied to clipboard!');
+                orionDialog.alert('Code copied to clipboard!');
             }, function(err) {
-                alert('Failed to copy code: ', err);
+                orionDialog.error('Failed to copy code: ', err);
             });
         }
         function saveCode() {
@@ -198,11 +198,11 @@ var editor = ace.edit("editor");
                 .then(() => {
                     var code = editor.getValue();
                     localStorage.setItem('ORION_EDITOR_CODE', code);
-                    alert('Code saved to localStorage!');
+                    orionDialog.alert('Code saved to localStorage!');
                     console.log("Code saved to localStorage.");
                 })
                 .catch(e => {
-                    alert("There was an error saving the code: " + e.message);
+                    orionDialog.error("There was an error saving the code: " + e.message);
                     console.error("Error saving code:", e);
                 });
         }
@@ -222,7 +222,7 @@ var editor = ace.edit("editor");
                 console.log("Code downloaded.");
 
             } catch (e) {
-                alert("There was an error downloading the code: " + e.message);
+                orionDialog.error("There was an error downloading the code: " + e.message);
                 console.error("Error downloading code:", e);
             };
         }
@@ -242,7 +242,7 @@ var editor = ace.edit("editor");
             input.click();
         }
         function notAddedYet() {
-            alert("This feature is not added yet.");
+            orionDialog.alert("This feature is not added yet.");
         }
 
         var iframe = document.getElementById('preview');
