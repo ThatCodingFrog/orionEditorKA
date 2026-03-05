@@ -7,6 +7,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
     <link rel="icon" href="./resources/logo.png" type="image/x-icon">
     <link rel="stylesheet" href="./resources/style.css" />
+    <link rel="stylesheet" href="./resources/editor-tabs.css" />
+    <script src="./resources/scripts/VFS.js"></script> <!--Load as early as possible, to ensure database for Virtual File System is set up as soon as possible-->
+    <script>
+        var orionVFS = new VFS();
+    </script>
+
+
 </head>
 <body>
     <div id="fadeBackground"></div>
@@ -48,7 +55,7 @@
             <button class="fullscreen-btn material-symbols-rounded" onclick="downloadCode()" title="Download Code in Editor">
                 download
             </button>
-            <button class="tool material-symbols-rounded" onclick="notAddedYet()" title="New File">
+            <button class="tool material-symbols-rounded" onclick="createNewFile()" title="New File">
                 add_2
             </button>
         </div>
@@ -63,6 +70,8 @@
     </div>
     <div class="editor-plus-preview">
         <div id="editor-container">
+            <div id="fileTrack">
+            </div>
             <div id="editor">
                 <!-- Ace editor will replace this content -->
             </div>
@@ -103,6 +112,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.0/beautify-html.min.js"></script>
 
     <script src="./resources/scripts/dialog.js"></script>
+    <script src="./resources/scripts/newEditorTab.js"></script>
     <script src="./resources/scripts/main.js"></script>
     <script src="./resources/scripts/beautify-animation.js"></script>
 </body>
