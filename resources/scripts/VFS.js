@@ -56,7 +56,10 @@ class VFS {
 
         const createRequest = store.add(file);
 
-        createRequest.onsuccess = () => { console.log("File created successfully"); alert("File created successfully"); }
+        createRequest.onsuccess = () => {
+            console.log("File created successfully");
+            orionDialog.alert("File created successfully");
+        }
         createRequest.onerror = () => { throw new Error(`Error creating new file: ${createRequest.error}`); }
     }
 
@@ -139,7 +142,23 @@ class VFS {
      * @return {url} The URL created from Blob of file contents
      */
     getFileURL(file) {
-        const url = URL.createObjectURL(new Blob([]));
+        const data = this.readFile(file);
+        const filetype = file.split(".")[1];
+        let blobDataType = "text/plain";
+
+        switch (filetype) {
+            case "js":
+                blobDataType = "text/javascript";
+                break;
+            case "css":
+                blobDataType = "text/css";
+                break;
+            case "html":
+                blobDataType = "text/html";
+                break;
+        }
+
+        const url = URL.createObjectURL(new Blob([data], {type: blobDataType}));
         return url;
     }
 

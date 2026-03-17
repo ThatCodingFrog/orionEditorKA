@@ -9,24 +9,29 @@
     <link rel="stylesheet" href="./resources/style.css" />
     <link rel="stylesheet" href="./resources/editor-tabs.css" />
     <script src="./resources/scripts/VFS.js"></script> <!--Load as early as possible, to ensure database for Virtual File System is set up as soon as possible-->
+    <script src="./resources/scripts/dialog.js"></script> <!--Load the Orion Dialog early as well-->
     <script>
+        // Global variables relating to the VFS
         var orionVFS = new VFS();
+        var currentFile = "index.html";
+
     </script>
 
 
 </head>
 <body>
+
     <div id="fadeBackground"></div>
 
     <nav>
         <a class="logo" href="https://www.khanacademy.org/profile/awesomeorion" target="_blank" rel="noopener">
-            <img src="./resources/logo.png" alt="orion editor logo"/>
+            <img src="./resources/logo.png" alt="orion editor logo" />
             <div class="sidebar-text text">
                 <h3>Orion Editor<span>v0.7</span></h3>
             </div>
         </a>
         <div>
-            <a href="https://www.khanacademy.org/computer-programming/awesomeorions-subpage/6293773329285120" target="_blank" rel="noopener">Subscribe</a>
+            <a href="https://www.khanacademy.org/computer-programming/orion-studios-v3/4970259604422656" target="_blank" rel="noopener">Subscribe</a>
             <a href="https://www.khanacademy.org/profile/me" target="_blank" rel="noopener" class="return-to-ka">
                 Return to KA
                 <span class="material-symbols-rounded">
@@ -106,14 +111,16 @@
             </button>
         </div>
     </footer>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-inline_autocomplete.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.0/beautify-html.min.js"></script>
 
-    <script src="./resources/scripts/dialog.js"></script>
     <script src="./resources/scripts/newEditorTab.js"></script>
     <script src="./resources/scripts/main.js"></script>
+    <script src="./resources/scripts/button-funcs.js"></script>
     <script src="./resources/scripts/beautify-animation.js"></script>
 </body>
 </html>

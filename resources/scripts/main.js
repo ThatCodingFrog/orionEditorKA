@@ -171,237 +171,147 @@ editor.session.on('change', function () {
     updatePreview();
 });
 
-function beautifyCode() {
-    Promise.resolve()
-        .then(() => {
-            var code = editor.getValue();
-            var beautified = html_beautify(code);
-            editor.setValue(beautified, 1);
-            updatePreview();
-            console.log("Code beautified successfully.");
-        })
-        .catch(e => {
-            alert("There was an error beautifying the code: " + e.message);
-            console.error("Error beautifying code:", e);
-        });
+    
+    
+    
 
-        function beautifyCode() {
-            Promise.resolve()
-                .then(() => {
-                    var code = editor.getValue();
-                    var beautified = html_beautify(code);
-                    editor.setValue(beautified, 1);
-                    updatePreview();
-                    console.log("Code beautified successfully.");
-                })
-                .catch(e => {
-                    orionDialog.error("There was an error beautifying the code: " + e.message);
-                    console.error("Error beautifying code:", e);
-                });
-        }
-        function copyCode() {
-            var code = editor.getValue();
-            navigator.clipboard.writeText(code).then(function() {
-                orionDialog.alert('Code copied to clipboard!');
-            }, function(err) {
-                orionDialog.error('Failed to copy code: ', err);
-            });
-        }
-        function saveCode() {
-            Promise.resolve()
-                .then(() => {
-                    var code = editor.getValue();
-                    localStorage.setItem('ORION_EDITOR_CODE', code);
-                    orionDialog.alert('Code saved to localStorage!');
-                    console.log("Code saved to localStorage.");
-                })
-                .catch(e => {
-                    orionDialog.error("There was an error saving the code: " + e.message);
-                    console.error("Error saving code:", e);
-                });
-        }
-        function downloadCode() {
-            try {
-                var code = editor.getValue();
-                var blob = new Blob([code], { type: 'text/html' });
-                var url = URL.createObjectURL(blob);
-                var a = document.createElement('a');
-                a.href = url;
-                a.download = 'index.html';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                alert('Code downloaded!');
-                console.log("Code downloaded.");
+    var iframe = document.getElementById('preview');
+    function updateIframeSize() {
+        document.getElementById('canvasWidth').textContent = iframe.offsetWidth;
+        document.getElementById('canvasHeight').textContent = iframe.offsetHeight;
 
-            } catch (e) {
-                orionDialog.error("There was an error downloading the code: " + e.message);
-                console.error("Error downloading code:", e);
-            };
-        }
-        function uploadCode() {
-            var input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.html,.htm,.txt';
-            input.onchange = e => {
-                var file = e.target.files[0];
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    editor.setValue(e.target.result);
-                    updatePreview();
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-        function notAddedYet() {
-            orionDialog.alert("This feature is not added yet.");
-        }
-
-function createNewFile() {
-    var filename = prompt("Enter a name for your new file: ", "myFile");
-    var ext = prompt("Enter the file extension (html, css, js): ", "js");
-    orionVFS.createFile(filename, ext);
-
-    createNewEditorTab(filename + "." + ext);
-}
-function notAddedYet() {
-    alert("This feature is not added yet.");
-}
-
-var iframe = document.getElementById('preview');
-function updateIframeSize() {
-    document.getElementById('canvasWidth').textContent = iframe.offsetWidth;
-    document.getElementById('canvasHeight').textContent = iframe.offsetHeight;
-}
-updateIframeSize();
-setInterval(updateIframeSize, 1);
-
-// Resizer functionality
-const resizer = document.getElementById('resizer');
-const editorContainer = document.getElementById('editor-container');
-const previewContainer = document.getElementById('preview-container');
-let isResizing = false;
-
-resizer.addEventListener('mousedown', function (e) {
-    isResizing = true;
-    document.body.style.cursor = 'ew-resize';
-});
-
-document.addEventListener('mousemove', function (e) {
-    if (!isResizing) return;
-    let parent = resizer.parentNode;
-    let totalWidth = parent.offsetWidth;
-    let offset = e.clientX - parent.offsetLeft;
-    // Minimum width for both panes
-    let minWidth = 100;
-    if (offset < minWidth) offset = minWidth;
-    if (offset > totalWidth - minWidth) offset = totalWidth - minWidth;
-    editorContainer.style.width = offset + 'px';
-    previewContainer.style.width = (totalWidth - offset - resizer.offsetWidth) + 'px';
-});
-
-document.addEventListener('mouseup', function (e) {
-    if (isResizing) {
-        isResizing = false;
-        document.body.style.cursor = '';
+        setTimeout(updateIframeSize, 1000 / 120);
     }
-});
+    updateIframeSize();
+    
+    // Resizer functionality
+    const resizer = document.getElementById('resizer');
+    const editorContainer = document.getElementById('editor-container');
+    const previewContainer = document.getElementById('preview-container');
+    let isResizing = false;
 
-var restartBtn = document.querySelector('#restart-icon');
-function rotate() {
-    restartBtn.style.animation = "rotate 0.35s ease-out";
-    window.setTimeout(function () {
-        restartBtn.style.animation = "none";
-    }, 350)
-}
+    resizer.addEventListener('mousedown', function (e) {
+        isResizing = true;
+        document.body.style.cursor = 'ew-resize';
+    });
 
-function updateTime() {
-    const timeDiv = document.querySelector('.time');
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    timeDiv.textContent = `${hours}:${minutes} ${ampm}`;
-}
-setInterval(updateTime, 1000);
-updateTime();
+    document.addEventListener('mousemove', function (e) {
+        if (!isResizing) return;
+        let parent = resizer.parentNode;
+        let totalWidth = parent.offsetWidth;
+        let offset = e.clientX - parent.offsetLeft;
+        // Minimum width for both panes
+        let minWidth = 100;
+        if (offset < minWidth) offset = minWidth;
+        if (offset > totalWidth - minWidth) offset = totalWidth - minWidth;
+        editorContainer.style.width = offset + 'px';
+        previewContainer.style.width = (totalWidth - offset - resizer.offsetWidth) + 'px';
+    });
 
-function openFullscreenPreview() {
-    var code = editor.getValue();
-    var newTab = window.open('', '_blank');
-    newTab.document.write(code);
-    newTab.document.close();
-}
+    document.addEventListener('mouseup', function (e) {
+        if (isResizing) {
+            isResizing = false;
+            document.body.style.cursor = '';
+        }
+    });
 
-const themeBtn = document.getElementById("theme");
-let currentTheme = 0;
-const changeTheme = () => {
-    document.body.classList.toggle("dark");
-    if (currentTheme === 1) {
-        editor.setTheme("ace/theme/textmate");
-        currentTheme = 0;
-        themeBtn.innerHTML = "dark_mode";
-    } else {
-        editor.setTheme("ace/theme/monokai");
-        currentTheme = 1;
-        themeBtn.innerHTML = "light_mode";
+    var restartBtn = document.querySelector('#restart-icon');
+    function rotate() {
+        restartBtn.style.animation = "rotate 0.35s ease-out";
+        window.setTimeout(function () {
+            restartBtn.style.animation = "none";
+        }, 350)
     }
-};
-themeBtn.addEventListener("click", changeTheme);
 
-var editorIsShowing = true;
-
-function toggleEditor() {
-    if (editorIsShowing) {
-        editorContainer.style.display = 'none';
-        previewContainer.style.width = '100%';
-        resizer.style.display = 'none';
-        editorIsShowing = false;
-    } else {
-        editorContainer.style.display = 'block';
-        previewContainer.style.width = '50%';
-        resizer.style.display = 'block';
-        editorIsShowing = true;
+    function updateTime() {
+        const timeDiv = document.querySelector('.time');
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+        timeDiv.textContent = `${hours}:${minutes} ${ampm}`;
     }
-}
-window.addEventListener('resize', function () {
-    if (window.innerWidth <= 800) {
-        editorContainer.style.display = 'block';
-        previewContainer.style.width = '100%';
-        resizer.style.display = 'none';
-        editorIsShowing = false;
-    } else {
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    function openFullscreenPreview() {
+        var code = editor.getValue();
+        var newTab = window.open('', '_blank');
+        newTab.document.write(code);
+        newTab.document.close();
+    }
+
+    const themeBtn = document.getElementById("theme");
+    let currentTheme = 0;
+    const changeTheme = () => {
+        document.body.classList.toggle("dark");
+        if (currentTheme === 1) {
+            editor.setTheme("ace/theme/textmate");
+            currentTheme = 0;
+            themeBtn.innerHTML = "dark_mode";
+        } else {
+            editor.setTheme("ace/theme/monokai");
+            currentTheme = 1;
+            themeBtn.innerHTML = "light_mode";
+        }
+    };
+    themeBtn.addEventListener("click", changeTheme);
+
+    var editorIsShowing = true;
+
+    function toggleEditor() {
         if (editorIsShowing) {
             editorContainer.style.display = 'none';
             previewContainer.style.width = '100%';
             resizer.style.display = 'none';
+            editorIsShowing = false;
         } else {
             editorContainer.style.display = 'block';
             previewContainer.style.width = '50%';
             resizer.style.display = 'block';
+            editorIsShowing = true;
         }
     }
-});
-window.onload = async function () {
-    if (window.innerWidth <= 800) {
-        editorContainer.style.display = 'block';
-        previewContainer.style.width = '100%';
-        resizer.style.display = 'none';
-        editorIsShowing = false;
-    }
-    //const savedCode = localStorage.getItem('ORION_EDITOR_CODE');
-    const savedCode = await orionVFS.readFile('index.html');
-    if (savedCode) {
-        editor.setValue(savedCode);
-        updatePreview();
-    }
 
-    var fileArray = await orionVFS.getAllFiles().then((files) => { return files });
-    for (var i = 0; i < fileArray.length; i++) {
-        createNewEditorTab(fileArray[i].filename);
-    }
-};
+
+    window.addEventListener('resize', function () {
+        if (window.innerWidth <= 800) {
+            editorContainer.style.display = 'block';
+            previewContainer.style.width = '100%';
+            resizer.style.display = 'none';
+            editorIsShowing = false;
+        } else {
+            if (editorIsShowing) {
+                editorContainer.style.display = 'none';
+                previewContainer.style.width = '100%';
+                resizer.style.display = 'none';
+            } else {
+                editorContainer.style.display = 'block';
+                previewContainer.style.width = '50%';
+                resizer.style.display = 'block';
+            }
+        }
+    });
+
+
+    window.onload = async function () {
+        if (window.innerWidth <= 800) {
+            editorContainer.style.display = 'block';
+            previewContainer.style.width = '100%';
+            resizer.style.display = 'none';
+            editorIsShowing = false;
+        }
+
+        const savedCode = await orionVFS.readFile('index.html');
+        if (savedCode) {
+            editor.setValue(savedCode);
+            updatePreview();
+        }
+
+        var fileArray = await orionVFS.getAllFiles().then((files) => { return files });
+        for (var i = 0; i < fileArray.length; i++) {
+            createNewEditorTab(fileArray[i].filename);
+        }
+}
