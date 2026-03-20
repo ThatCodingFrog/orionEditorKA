@@ -1,5 +1,3 @@
-var currentTab = "index.html";
-
 function createNewEditorTab(filename) {
     var fileTrack = document.getElementById("fileTrack");
 
@@ -8,7 +6,7 @@ function createNewEditorTab(filename) {
     newTab.id = filename;
     newTab.innerText = filename;
 
-    if (currentTab == filename) {
+    if (currentFile == filename) {
         newTab.style.background = "gainsboro";
     } else {
         newTab.style.background = "white";
@@ -23,14 +21,14 @@ function createNewEditorTab(filename) {
 }
 
 function updateCurrentFileTab(tab) {
-    console.log(currentTab, tab);
+    console.log(currentFile, tab);
     var tab = document.getElementById(tab);
-    var prevTab = document.getElementById(currentTab);
+    var prevTab = document.getElementById(currentFile);
 
     prevTab.style.background = "white";
     tab.style.background = "gainsboro";
 
-    currentTab = tab.id;
+    currentFile = tab.id;
 }
 
 function getEditorTabs() {

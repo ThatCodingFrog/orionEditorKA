@@ -38,6 +38,7 @@ function saveCode() {
             console.error("Error saving code:", e);
         });
 }
+
 function downloadCode() {
     try {
         var code = editor.getValue();
@@ -58,6 +59,7 @@ function downloadCode() {
         console.error("Error downloading code:", e);
     };
 }
+
 function uploadCode() {
     var input = document.createElement('input');
     input.type = 'file';
@@ -74,12 +76,13 @@ function uploadCode() {
     input.click();
 }
 
-function createNewFile() {
-    var filename = prompt("Enter a name for your new file: ", "myFile");
-    var ext = prompt("Enter the file extension (html, css, js): ", "js");
-    orionVFS.createFile(filename, ext);
+async function createNewFile() {
+    var filename = await orionDialog.prompt(["Enter a name for your new file: ", "Enter the file extension (html, css, js): "]);
+    console.log(filename);
+    //var ext = prompt(, "js");
+    //orionVFS.createFile(filename, ext);
 
-    createNewEditorTab(filename + "." + ext);
+    //createNewEditorTab(filename + "." + ext);
 }
 function notAddedYet() {
     orionDialog.alert("This feature is not added yet.");

@@ -179,7 +179,5 @@ class VFS {
                 resolve(getAllRequest.result);
             }
         });
-
-        //return getAllRequest;
     }
 }
